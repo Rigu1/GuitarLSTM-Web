@@ -1,109 +1,79 @@
-# GuitarLSTM
+# GuitarLSTM Flask Web Interface
 
-GuitarLSTM trains guitar effect/amp neural network models for processing
-on wav files.  Record input/output samples from the target guitar amplifier or
-pedal, then use this code to create a deep learning model of the
-sound. The model can then be applied to other wav files to make it sound
-like the amp or effect. This code uses Tensorflow/Keras.
+이 프로젝트는 [GuitarLSTM](https://github.com/GuitarML/GuitarLSTM) 기반의 사전 학습된 이펙터 모델을 사용하여 사용자가 업로드한 기타 음원(wav 파일)에 대해 이펙터 효과를 적용하고, 변환된 음원을 다운로드할 수 있는 웹 인터페이스를 제공합니다.
 
-The LSTM (Long short-term memory) model is effective for copying the sound of 
-tube amplifiers, distortion, overdrive, and compression. It also captures the 
-impulse response of the mic/cab used for recording the samples. In comparison
-to the WaveNet model, this implementation is much faster and can more accurately 
-copy the sound of complex guitar signals while still training on a CPU.
+Flask 서버와 HTML/CSS/JS 기반의 간단한 대시보드를 통해 작동하며, 현재는 Ibanez TS9 오버드라이브 모델을 기본으로 제공하고 있습니다.
 
+---
 
-## Info
-A variation on the LSTM model from the research paper [Real-Time Guitar Amplifier Emulation with Deep
-Learning](https://www.mdpi.com/2076-3417/10/3/766/htm)
+## 📦 설치 방법
 
-
-For a great explanation of how LSTMs work, check out this [blog post](https://colah.github.io/posts/2015-08-Understanding-LSTMs/).
-
-## Data
-
-`data/ts9_test1_in_FP32.wav` - Playing from a Fender Telecaster, bridge pickup, max tone and volume<br>
-`data/ts9_test1_out_FP32.wav` - Split with JHS Buffer Splitter to Ibanez TS9 Tube Screamer
-(max drive, mid tone and volume).<br>
-`models/ts9_model.h5` - Pretrained model weights
-
-
-## Usage
-
-**Train model and run effect on .wav file**:
-Must be single channel, 44.1 kHz, FP32 wav data (not int16)
-```bash
-# Preprocess the input data, perform training, and generate test wavs and analysis plots. 
-# Specify input wav file, output wav file, and desired model name.
-# Output will be saved to "models/out_model_name/" folder.
-
-python train.py data/ts9_test1_in_FP32.wav data/ts9_test1_out_FP32.wav out_model_name
-
-
-# Run prediction on target wav file
-# Specify input file, desired output file, and model path
-python predict.py data/ts9_test1_in_FP32.wav output models/ts9_model.h5
-```
-
-**Training parameters**:
+먼저 해당 저장소를 클론한 뒤, Python 가상환경을 만들고 필요한 패키지를 설치합니다:
 
 ```bash
-# Use these arguments with train.py to further customize the model:
+git clone https://github.com/yourusername/GuitarLSTM-Web.git
+cd GuitarLSTM-Web
 
---training_mode=0  # enter 0, 1, or 2 for speed tranining, accuracy training, or extended training, respectively
---input_size=150   # sets the number of previous samples to consider for each output sample of audio
---split_data=3     # splits the input data by X amount to reduce RAM usage; trains the model on each split separately
---max_epochs=1     # sets the number of epochs to train for; intended to be increased dramatically for extended training
---batch_size=4096  # sets the batch size of data for training
+python3 -m venv venv
+source venv/bin/activate
 
-# Edit the "TRAINING MODE" or "Create Sequential Model" section of train.py to further customize each layer of the neural network.
+pip install -r requirements.txt
 ```
 
-**Colab Notebook**:
-Use Google Colab notebook (guitar_lstm_colab.ipynb) for training 
-GuitarLSTM models in the cloud. See notebook comments for instructions.
+---
 
-## Training Info
+## 🚀 실행 방법
 
-Helpful tips on training models:
-1. Wav files should be 3 - 4 minutes long, and contain a variety of
-   chords, individual notes, and playing techniques to get a full spectrum
-   of data for the model to "learn" from.
-2. A buffer splitter was used with pedals to obtain a pure guitar signal
-   and post amp/effect signal. You can also use a feedback loop from your
-   audio interface to record input/output simultaneously.
-3. Obtaining sample data from an amp can be done by splitting off the original
-   signal, with the post amp signal coming from a microphone (I used a SM57).
-   Keep in mind that this captures the dynamic response of the mic and cabinet.
-   In the original research the sound was captured directly from within the amp
-   circuit to have a "pure" amp signal.
-4. Generally speaking, the more distorted the effect/amp, the more difficult it
-   is to train. 
-5. Requires float32 .wav files for training (as opposed to int16).
-   
-   
-## Limitations and future work
+Flask 서버를 실행합니다:
 
-This implementation of the LSTM model uses a high amount of
-RAM to preprocess wav data. If you experience crashes due to 
-limited memory, reduce the "input_size" parameter by using 
-the "--input_size=" flag with train.py. The default setting is 100,
-which requires about 8GB of RAM. Increasing this setting will improve 
-training accuracy, but the size of the preprocessed wav data in 
-RAM will increase as well.
+```bash
+python app.py
+```
 
-You can also use the "--split_data" parameter with train.py to
-train the same model on separate sections of the data. This
-will reduce RAM usage while still allowing a high input_size
-setting. For example, "--split_data=5" would split the data 
-into 5 sections, and train each section separately. The default
-is 1, or no splitting.
+웹 브라우저에서 `http://127.0.0.1:5000` 으로 접속하면 웹 인터페이스를 통해 `.wav` 파일 업로드 및 이펙터 적용 결과를 확인할 수 있습니다.
 
-A custom dataloader has been added to the Colab notebook using MSE
-for the loss calculation. This reduces RAM usage and eliminates the 
-need for the --split_data parameter.
-   
-A real-time implementation for use in a guitar plugin: [SmartAmpPro](https://github.com/GuitarML/SmartAmpPro)
+---
 
-Note: The model training has been integrated into the SmartAmpPro plugin, the 
-models trained with GuitarLSTM are not currently compatible with the plugin.
+## 📂 파일 구조
+
+```
+.
+├── app.py                  # Flask 백엔드 서버
+├── predict.py              # wav 파일에 이펙터 적용하는 로직
+├── static/
+│   ├── style.css
+│   ├── script.js
+│   ├── ts9.png
+│   ├── uploads/            # 업로드된 원본 wav 파일 저장 폴더
+│   └── downloads/          # 이펙터 적용된 wav 파일 저장 폴더
+├── templates/
+│   └── ts9_dashboard.html  # 웹 프론트엔드
+├── models/
+│   └── ts9_model.h5        # 사전 학습된 TS9 이펙터 모델
+└── requirements.txt        # 필요한 패키지 리스트
+```
+
+---
+
+## ⚙️ 시스템 아키텍처
+
+- **Frontend**: HTML/CSS/JavaScript로 구성된 간단한 UI.
+- **Backend**: Flask를 통한 REST API 기반의 서버.
+- **Model Inference**: `predict.py` 스크립트를 통해 `.h5` 모델을 로드하고 사용자 음원에 적용.
+- **파일 관리**:
+  - 업로드된 음원 → `static/uploads/` 저장
+  - 변환된 음원 → `static/downloads/` 저장
+
+---
+
+## 📝 사용법 요약
+
+- WAV 음원을 업로드하면 서버에서 `.h5` 모델을 통해 이펙터를 적용합니다.
+- 처리된 결과는 다운로드 링크로 제공합니다.
+- 모델은 TS9 외에도 원하는 모델(.h5)을 교체하여 활용 가능합니다.
+
+---
+
+## 🎸 참고
+
+- 모델 학습 방법은 원 프로젝트 [GuitarLSTM](https://github.com/GuitarML/GuitarLSTM)을 참고하세요.

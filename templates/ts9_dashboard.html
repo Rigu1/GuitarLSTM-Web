@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TS9 대시보드</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='style.css') }}"
+    />
+    <script src="{{ url_for('static', filename='script.js') }}" defer></script>
+  </head>
+  <body>
+    <div class="dashboard">
+      <div class="image-box">
+        <img
+          src="{{ url_for('static', filename='ts9.png') }}"
+          alt="TS9 Tube Screamer"
+        />
+        <div class="overlay">
+          <h3>설명</h3>
+          <p>
+            TS9은 부드러운 중음대 부스트와 적당한 게인을 제공하는 대표적인
+            오버드라이브 페달입니다. 따뜻한 미드 범프, 매끄러운 클리핑, 빈티지한
+            록/블루스 톤에 최적화되어 있습니다.
+          </p>
+        </div>
+      </div>
+      <div class="info">
+        <div>
+          <h2>Ibanez TS9 Tube Screamer</h2>
+          <span class="tag">Overdrive · Classic</span>
+          <div class="upload-box">
+            <input
+              type="file"
+              id="audioInput"
+              accept=".wav"
+              style="display: none"
+            />
+            <button id="uploadButton" class="upload-button">
+              업로드 및 변환
+            </button>
+            <audio id="uploadedPlayer" controls style="display: none"></audio>
+          </div>
+
+          <div id="loadingSpinner" style="display: none">
+            <br />변환 중입니다. 잠시만 기다려주세요...
+          </div>
+
+          <div class="download-link" id="downloadSection" style="display: none">
+            <a
+              href="{{ url_for('static', filename='ts9_drive.wav') }}"
+              download
+            >
+              이펙터 적용 음원 다운로드
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
