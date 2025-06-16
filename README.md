@@ -1,5 +1,7 @@
 # GuitarLSTM Flask Web Interface
 
+> **License: [GNU General Public License v3.0](LICENSE)**
+
 이 프로젝트는 [GuitarLSTM](https://github.com/GuitarML/GuitarLSTM) 기반의 사전 학습된 이펙터 모델을 사용하여 사용자가 업로드한 기타 음원(wav 파일)에 대해 이펙터 효과를 적용하고, 변환된 음원을 다운로드할 수 있는 웹 인터페이스를 제공합니다.
 
 Flask 서버와 HTML/CSS/JS 기반의 간단한 대시보드를 통해 작동하며, 현재는 Ibanez TS9 오버드라이브 모델을 기본으로 제공하고 있습니다.
@@ -11,7 +13,7 @@ Flask 서버와 HTML/CSS/JS 기반의 간단한 대시보드를 통해 작동하
 먼저 해당 저장소를 클론한 뒤, Python 가상환경을 만들고 필요한 패키지를 설치합니다:
 
 ```bash
-git clone https://github.com/yourusername/GuitarLSTM-Web.git
+git clone https://github.com/rigu1/GuitarLSTM-Web.git
 cd GuitarLSTM-Web
 
 python3 -m venv venv
@@ -22,7 +24,7 @@ pip install -r requirements.txt
 
 ---
 
-## 🚀 실행 방법
+## 실행 방법
 
 Flask 서버를 실행합니다:
 
@@ -55,7 +57,7 @@ python app.py
 
 ---
 
-## ⚙️ 시스템 아키텍처
+## 시스템 아키텍처
 
 - **Frontend**: HTML/CSS/JavaScript로 구성된 간단한 UI.
 - **Backend**: Flask를 통한 REST API 기반의 서버.
@@ -66,7 +68,7 @@ python app.py
 
 ---
 
-## 📝 사용법 요약
+## 사용법 요약
 
 - WAV 음원을 업로드하면 서버에서 `.h5` 모델을 통해 이펙터를 적용합니다.
 - 처리된 결과는 다운로드 링크로 제공합니다.
@@ -74,6 +76,6 @@ python app.py
 
 ---
 
-## 🎸 참고
+## 참고
 
 - 모델 학습 방법은 원 프로젝트 [GuitarLSTM](https://github.com/GuitarML/GuitarLSTM)을 참고하세요.
