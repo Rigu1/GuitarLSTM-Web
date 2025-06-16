@@ -1,3 +1,6 @@
+# Modified by In Gyu-Sim on 2025-06-16
+# Based on original GuitarLSTM by GuitarML (https://github.com/GuitarML/GuitarLSTM)
+
 import tensorflow as tf
 from tensorflow.keras.models import load_model
 import tensorflow.keras.backend as K

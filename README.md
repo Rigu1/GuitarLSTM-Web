@@ -1,6 +1,7 @@
 # GuitarLSTM Flask Web Interface
 
-> **License: [GNU General Public License v3.0](LICENSE)**
+> **License: [GNU General Public License v3.0](LICENSE)** <br>
+> 이 프로젝트는 [GuitarLSTM](https://github.com/GuitarML/GuitarLSTM)을 기반으로 확장되었습니다.
 
 이 프로젝트는 [GuitarLSTM](https://github.com/GuitarML/GuitarLSTM) 기반의 사전 학습된 이펙터 모델을 사용하여 사용자가 업로드한 기타 음원(wav 파일)에 대해 이펙터 효과를 적용하고, 변환된 음원을 다운로드할 수 있는 웹 인터페이스를 제공합니다.
 
