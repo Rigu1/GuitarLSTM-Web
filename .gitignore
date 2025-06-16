@@ -5,6 +5,5 @@ __pycache__/
 *.pyd
 *.DS_Store
 .env
-*.h5
-/static/upload/*
-/static/download/*
+static/upload/*
+static/download/*
